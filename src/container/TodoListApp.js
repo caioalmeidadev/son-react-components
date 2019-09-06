@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import TodoForm from './../components/TodoForm';
 import { TodoList } from './../components/TodoList';
-
+import {WelcomeMessage} from './../components/Message';
+import { getTodos } from '../services/api';
 export default class TodoListApp extends Component {
   
     constructor(props) {
@@ -9,6 +10,11 @@ export default class TodoListApp extends Component {
         this.state = {
             items: []
         }
+    }
+
+    async componentDidMount() {
+        const {data} = await getTodos();
+        this.setState({items: data});
     }
     
     pushToItems = (todo) => {
@@ -26,7 +32,7 @@ export default class TodoListApp extends Component {
         const { items } = this.state;
         return (
             <div id="app" className="container">
-            <h2>TodoList</h2>    
+            <WelcomeMessage />
             <TodoForm pushToItems={this.pushToItems} />
             <hr/>
             <TodoList items={items} removeFromItems={this.removeFromItems} />
